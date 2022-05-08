@@ -1,6 +1,7 @@
 package entity;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -23,6 +24,7 @@ public class Player extends Entity {
 		screenY = gp.screenHeight/2 - (gp.tileSize/2);
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);
 		
+		solidArea = new Rectangle(0,0,gp.tileSize-16,gp.tileSize-16); // x,y,width,height
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -56,33 +58,60 @@ public class Player extends Entity {
 	}
 	
 	public void update() {	//update position
-		if( keyH.upPressed == true) {
-			worldY -= speed;
-			direction = "up";
-		} 
-		else if( keyH.downPressed == true) {
-			worldY += speed;
-			direction = "down";
-		}
-		else if( keyH.leftPressed == true) {
-			worldX -= speed;
-			direction = "left";
-		}
-		else if( keyH.rightPressed == true) {
-			worldX += speed;
-			direction = "right";
+		
+		
+		if(keyH.upPressed ==true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) { 
+			// Phai nhan 1 phim bat ky de lot vao ham nay. Neu khong co ham if nay thi se tu dong di thang xuong duoi
+			
+			if( keyH.upPressed == true) {
+				direction = "up";
+			} 
+			else if( keyH.downPressed == true) {
+				direction = "down";
+			}
+			else if( keyH.leftPressed == true) {
+				direction = "left";
+			}
+			else if( keyH.rightPressed == true) {
+				direction = "right";
+			}
+			
+			//Check tile collision
+			collisionOn = false;
+			gp.cChecker.checkTile(this);
+			
+			//if collision is fall, player can move
+			if(collisionOn == false) {
+				switch(direction) {
+				case "up":
+					worldY -= speed;
+					break;
+				case "down":
+					worldY += speed;
+					break;
+				case "left":
+					worldX -= speed;
+					break;
+				case "right":
+					worldX += speed;
+					break;
+				}
+			}
+			
+			spriteCounter++;
+			if(spriteCounter > 12) {
+				if(spriteNum == 1) {
+					spriteNum = 2;
+				}
+				else if(spriteNum == 2) {
+					spriteNum = 1;
+				}
+				spriteCounter = 0;
+			}
+			
 		}
 		
-		spriteCounter++;
-		if(spriteCounter > 10) {
-			if(spriteNum == 1) {
-				spriteNum = 2;
-			}
-			else if(spriteNum == 2) {
-				spriteNum = 1;
-			}
-			spriteCounter = 0;
-		}
+
 			
 	}
 	
