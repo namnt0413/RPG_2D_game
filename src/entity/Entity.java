@@ -14,5 +14,6 @@ public class Entity {
 	public int spriteCounter = 0;// character walk
 	public int spriteNum = 1;
 	public Rectangle solidArea; // fix the player bounder
+	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 }
