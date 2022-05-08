@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable{
 		int FPS = 60;
 		
 		TileManager tileM = new TileManager(this);
-		KeyHandler keyH = new KeyHandler();
+		KeyHandler keyH = new KeyHandler(this);
 		Thread gameThread;
 		public Player player = new Player(this,keyH);
 		
@@ -40,6 +40,22 @@ public class GamePanel extends JPanel implements Runnable{
 			this.addKeyListener(keyH);
 			this.setFocusable(true); // with this, this GamePanel will focus to receive key input
 			
+		}
+		
+		public void zoomInOut( int i) {
+			
+			int oldWorldWidth = tileSize * maxWorldCol;//2400
+			tileSize += i;
+			int newWorldWidth = tileSize * maxWorldCol;//2350
+			
+			player.speed = (double)newWorldWidth/600;
+			
+			double multiplier = (double)newWorldWidth/oldWorldWidth;
+			double newPlayerWorldX = player.worldX * multiplier;
+			double newPlayerWorldY = player.worldY * multiplier;
+			
+			player.worldX = newPlayerWorldX;
+			player.worldY = newPlayerWorldY;
 		}
 		
 		public void startGameThread() { // Khoi chay 1 luong game

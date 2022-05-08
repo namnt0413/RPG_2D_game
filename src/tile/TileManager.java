@@ -99,14 +99,14 @@ public class TileManager {
 			
 			int worldX = worldCol * gp.tileSize;
 			int worldY = worldRow * gp.tileSize;
-			int screenX = worldX - gp.player.worldX + gp.player.screenX;	// +gp.player.screenX: vi camera luon o chinh giua
-			int screenY = worldY - gp.player.worldY + gp.player.screenY;
+			double screenX = worldX - gp.player.worldX + gp.player.screenX;	// +gp.player.screenX: vi camera luon o chinh giua
+			double screenY = worldY - gp.player.worldY + gp.player.screenY;
 			
 			if ( worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
 				 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
 				 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
 				 worldY - gp.tileSize <	 gp.player.worldY + gp.player.screenY ) {
-				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+				g2.drawImage(tile[tileNum].image, (int)screenX, (int)screenY, gp.tileSize, gp.tileSize, null);
 			}
 
 			worldCol++;
