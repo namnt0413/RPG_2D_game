@@ -9,8 +9,9 @@ import object.OBJ_Key;
 
 public class UI {
 	GamePanel gp;
+	Graphics2D g2;
 	Font arial_40, arial_60B;
-	BufferedImage keyImage;
+//	BufferedImage keyImage;
 	
 	public Boolean messageOn = false;
 	public String message = "";
@@ -23,8 +24,8 @@ public class UI {
 		
 		arial_40 = new Font("Arial",Font.PLAIN,40);
 		arial_60B = new Font("Arial",Font.PLAIN,60);
-		OBJ_Key key = new OBJ_Key(gp);
-		keyImage = key.image;
+//		OBJ_Key key = new OBJ_Key(gp);
+//		keyImage = key.image;
 		
 	}
 	
@@ -38,7 +39,20 @@ public class UI {
 	
 	public void draw(Graphics2D g2) {
 		
-		if(gameFinished == false) {
+		this.g2 = g2;
+		g2.setFont(arial_40);
+		g2.setColor(Color.white);
+		
+		if( gp.gameState == gp.playState ) {
+			
+			
+		}
+		
+		if( gp.gameState == gp.pauseState) {
+			drawPauseScreen();
+		}
+		
+/*		if(gameFinished == false) {
 			g2.setFont(arial_40);
 			g2.setColor(Color.white);
 			g2.drawImage(keyImage, gp.tileSize/2, gp.tileSize/2, gp.tileSize,gp.tileSize, null);
@@ -72,20 +86,30 @@ public class UI {
 			
 			
 
-			x = gp.screenWidth/2 -textLength/2;
+			x = gp.screenWidth/2 -textLength/2; // can chinh giua man hinh
 			y = gp.screenHeight/2 - gp.tileSize*2;
 			g2.drawString(text, x, y);
 			
 			gp.gameThread = null;
 			
 		}
+*/				
+	} // end draw method
+	
+	public void drawPauseScreen() {
 		
+		g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80F));
+		String text = "PAUSED";
+		int x = getXforCenteredText(text);
+		int y = gp.screenHeight/2;
 		
-
-		
-		
-		
+		g2.drawString(text, x, y);
 	}
 	
+	public int getXforCenteredText(String text) {
+		int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth(); // can doan text ra chinh giua
+		int x = gp.screenWidth/2 -length/2;
+		return x;
+	}
 	
 }
