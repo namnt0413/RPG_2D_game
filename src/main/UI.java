@@ -23,7 +23,7 @@ public class UI {
 		
 		arial_40 = new Font("Arial",Font.PLAIN,40);
 		arial_60B = new Font("Arial",Font.PLAIN,60);
-		OBJ_Key key = new OBJ_Key();
+		OBJ_Key key = new OBJ_Key(gp);
 		keyImage = key.image;
 		
 	}
@@ -34,7 +34,7 @@ public class UI {
 	}
 	
 	
-	
+
 	
 	public void draw(Graphics2D g2) {
 		
