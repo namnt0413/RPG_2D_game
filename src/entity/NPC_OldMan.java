@@ -14,6 +14,7 @@ public class NPC_OldMan extends Entity {
 		speed = 1;
 		
 		getImage();
+		setDialogue();
 	}
 	
 	public void getImage() {	// lay anh = thu vien anh java
@@ -28,6 +29,16 @@ public class NPC_OldMan extends Entity {
 		right2 = setup("/npc/oldman_right_2");
 		
 	}
+	
+	public void setDialogue() {
+		
+		dialogues[0] = "Hello";
+		dialogues[1] = "So you have come to this island \nto find the treasure?";
+		dialogues[2] = "I am used to be a great wizrad but now ...\n I am a bit too old for talking an adventure";
+		dialogues[3] = "Well, good luck on you !";
+
+	}
+	
 	
 	public void setAction() {
 		
@@ -52,13 +63,11 @@ public class NPC_OldMan extends Entity {
 			}
 		actionLockCounter = 0;	
 		}
-		
-
 	}
 	
-
-	
-	
-	
+	public void speak() {
+		
+		super.speak();	//ke thua tu Entity
+	}
 	
 }
