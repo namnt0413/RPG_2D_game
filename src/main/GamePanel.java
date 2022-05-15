@@ -50,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
 		public final int playState = 1;
 		public final int pauseState = 2;
 		public final int dialogueState = 3;
+		public final int titleState = 0;
 		
 		
 		public GamePanel() {
@@ -162,39 +163,44 @@ public class GamePanel extends JPanel implements Runnable{
 				//nothing
 				
 			}
-			
-
-			
+	
 		}
 		
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
 			
-			// tile draw
-			tileM.draw(g2);
-			
-			//NPC
-			for( int i = 0; i < npc.length ; i++) {
-				if( npc[i] != null ) {	// check if slot is not emty to advoid null ptr
-					npc[i].draw(g2);
-				}
+			// TITLE STATE
+			if( gameState == titleState ) {
+				ui.draw(g2);
 				
 			}
-			
-			//object
-			for( int i=0; i<obj.length; i++ ) {
-				if( obj[i] != null ) {	// check if slot is not emty to advoid null ptr
-					obj[i].draw(g2,this);
+			else {
+				// tile draw
+				tileM.draw(g2);
+				
+				//NPC
+				for( int i = 0; i < npc.length ; i++) {
+					if( npc[i] != null ) {	// check if slot is not emty to advoid null ptr
+						npc[i].draw(g2);
+					}
+					
 				}
 				
+				//object
+				for( int i=0; i<obj.length; i++ ) {
+					if( obj[i] != null ) {	// check if slot is not emty to advoid null ptr
+						obj[i].draw(g2,this);
+					}
+					
+				}
+				
+				// player draw
+				player.draw(g2);
+				
+				//UI
+				ui.draw(g2);
 			}
-			
-			// player draw
-			player.draw(g2);
-			
-			//UI
-			ui.draw(g2);
 			
 			g2.dispose();  // release all system resources using
 			
