@@ -66,9 +66,9 @@ public class GamePanel extends JPanel implements Runnable{
 			aSetter.setObject();
 			aSetter.setNPC();
 			
-			playMusic(0);
-			stopMusic();
-			gameState = playState;
+//			playMusic(0);
+//			stopMusic();
+			gameState = titleState;
 		}
 		
 		public void zoomInOut( int i) {
