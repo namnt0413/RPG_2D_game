@@ -276,6 +276,7 @@ public class Player extends Entity {
 			if( invincible == false) {
 				life -= 1;
 				invincible = true;
+				 gp.playSE(6);
 			}
 		
 		}
@@ -286,9 +287,12 @@ public class Player extends Entity {
 			if( gp.monster[i].invincible == false ) {
 				gp.monster[i].life -= 1;
 				gp.monster[i].invincible = true;
+				 gp.playSE(5);
+				 gp.monster[i].damageReaction(); 
 			}
 			if( gp.monster[i].life <= 0) {
-				gp.monster[i] = null;
+				gp.monster[i].dying = true;
+				
 			}
 		}
 	}

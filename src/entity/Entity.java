@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -35,6 +36,9 @@ public class Entity {
 	int dialogueIndex = 0;
 	public boolean collision = false;
 	boolean attacking = false;
+	public boolean alive = true;
+	public boolean dying = false;
+	boolean hpBarOn = false;	//bat khi player tan cong quai
 		
 	// CHARACTER STATUS
 	public String name;
@@ -46,6 +50,8 @@ public class Entity {
 	public int actionLockCounter = 0;
 	public int spriteCounter = 0;// character walk
 	public int spriteNum = 1;
+	int dyingCounter = 0;
+	int hpBarCounter = 0;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -59,6 +65,7 @@ public class Entity {
 	}
 	
 	public void setAction() {}
+	public void damageReaction() {}
 	public void speak() {
 		if( dialogues[dialogueIndex] == null) {
 			dialogueIndex = 0;
@@ -97,6 +104,7 @@ public class Entity {
 			if( gp.player.invincible == false) {
 				gp.player.life -= 1;
 				gp.player.invincible = true;
+				gp.playSE(6);
 			}
 		}
 		
@@ -189,13 +197,77 @@ public class Entity {
 		
 			}	//end switch
 			
-			if( invincible ==true ) {
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+			// MONSTER HP BAR
+			if( type == 2 && hpBarOn == true ) {
+				double oneScale = (double)gp.tileSize/maxLife;
+				double hpBarValue = oneScale*life;
+				
+				g2.setColor(new Color(35,35,35));
+				g2.fillRect((int)screenX -1 , (int)screenY - 16, gp.tileSize + 2, 12);
+				
+				g2.setColor(new Color(255,0,30));
+				g2.fillRect((int)screenX, (int)screenY - 15, (int)hpBarValue, 10);
+				
+				hpBarCounter++;
+				if( hpBarCounter > 600) {
+					hpBarCounter = 0;
+					hpBarOn = false;
+				}
 			}
+
+			if( invincible ==true ) {
+				hpBarOn = true;
+				hpBarCounter = 0;
+				changeAlpha(g2,0.4F);
+
+			}
+			if( dying == true) {
+				dyingAnimation(g2);
+				
+			}
+			
 			g2.drawImage(image, (int)screenX, (int)screenY, gp.tileSize, gp.tileSize, null);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			changeAlpha(g2,1F);
 		}
 			
+	}
+	
+	public void dyingAnimation(Graphics2D g2) {
+		dyingCounter++;
+		//int i = 5;
+		if( dyingCounter <= 5 ) {
+			changeAlpha(g2,0f);	
+		}
+		if( dyingCounter > 5 && dyingCounter <= 10 ) {
+			changeAlpha(g2,1f);	
+		}
+		if( dyingCounter > 10 && dyingCounter <= 15) {
+			changeAlpha(g2,0f);		
+		}
+		if( dyingCounter > 15 && dyingCounter <= 20 ) {
+			changeAlpha(g2,1f);	
+		}
+		if( dyingCounter > 20 && dyingCounter <= 25) {
+			changeAlpha(g2,0f);	
+		}
+		if( dyingCounter > 25 && dyingCounter <= 30 ) {
+			changeAlpha(g2,1f);	
+		}
+		if( dyingCounter > 30 && dyingCounter <= 35 ) {
+			changeAlpha(g2,0f);	
+		}
+		if( dyingCounter > 35 && dyingCounter <= 40 ) {
+			changeAlpha(g2,1f);	
+		}
+		if( dyingCounter > 40 ) {
+			dying = false;
+			alive = false;
+		}
+	}
+	
+	public void changeAlpha( Graphics2D g2, float alphaValue) {
+		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alphaValue));
 	}
 	
 	public BufferedImage setup(String imagePath, int width, int height) {
@@ -212,5 +284,6 @@ public class Entity {
 		} 
 		return image;
 	}
+	
 	
 }
