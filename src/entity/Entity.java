@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -17,35 +18,34 @@ public class Entity {
 	public double worldX, worldY;
 	public double speed;
 	
+	public BufferedImage image,image2,image3;
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
 	public String direction = "down";
-	
-	public int spriteCounter = 0;// character walk
-	public int spriteNum = 1;
+	public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 	
 	public Rectangle solidArea = new Rectangle(0,0,48,48); // fix the player bounder
+	public Rectangle attackArea = new Rectangle(0,0,0,0);
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false; // check collision
-	public int actionLockCounter = 0;
+	String dialogues[] = new String[20];
 	
+	//STATE
 	public boolean invincible = false;
 	public int invincibleCounter = 0;
-	
-	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
-	
+	public boolean collision = false;
+	boolean attacking = false;
+		
 	// CHARACTER STATUS
+	public String name;
 	public int maxLife;
 	public int life;
-	
-	//SUPER OBJECT
-	public BufferedImage image,image2,image3;
-	public String name;
-	public boolean collision = false;
-	
-	// CHECK TYPE OF ENTITY IS NPC OR MONSTER
 	public int type;	// 0 = player , 1 = npc, 2 = monster
-	
+
+	//COUNTER
+	public int actionLockCounter = 0;
+	public int spriteCounter = 0;// character walk
+	public int spriteNum = 1;
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -129,6 +129,15 @@ public class Entity {
 			spriteCounter = 0;
 		}
 		
+		if( invincible == true ) {
+			invincibleCounter++;
+			if( invincibleCounter >40 ) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+			
+		}
+		
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -180,19 +189,23 @@ public class Entity {
 		
 			}	//end switch
 			
+			if( invincible ==true ) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+			}
 			g2.drawImage(image, (int)screenX, (int)screenY, gp.tileSize, gp.tileSize, null);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
 			
 	}
 	
-	public BufferedImage setup(String imagePath) {
+	public BufferedImage setup(String imagePath, int width, int height) {
 		
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage image = null;
 		
 		try	{
 			image = ImageIO.read(getClass().getResourceAsStream(imagePath+".png"));
-			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+			image = uTool.scaleImage(image, width, height);
 			
 		} catch(IOException e) {
 				e.printStackTrace();
