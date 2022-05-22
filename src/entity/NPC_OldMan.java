@@ -15,6 +15,8 @@ public class NPC_OldMan extends Entity {
 		
 		getImage();
 		setDialogue();
+		
+		
 	}
 	
 	public void getImage() {	// lay anh = thu vien anh java

@@ -18,7 +18,7 @@ public class Entity {
 	public double speed;
 	
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-	public String direction;
+	public String direction = "down";
 	
 	public int spriteCounter = 0;// character walk
 	public int spriteNum = 1;
@@ -35,9 +35,20 @@ public class Entity {
 	public int maxLife;
 	public int life;
 	
+	//SUPER OBJECT
+	public BufferedImage image,image2,image3;
+	public String name;
+	public boolean collision = false;
+	
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
+		solidArea.x = 0;
+		solidArea.y = 16;
+		solidArea.width = 48;
+		solidArea.height = 32;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		
 	}
 	

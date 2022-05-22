@@ -1,14 +1,17 @@
 package main;
 import javax.swing.JPanel;
 
+
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -43,8 +46,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		// ENTITY AND OBJECT
 		public Player player = new Player(this,keyH);
-		public SuperObject obj[] = new SuperObject[10];
+		public Entity obj[] = new Entity[10];
 		public Entity npc[] = new Entity[10];
+		ArrayList<Entity> entityList = new ArrayList<>();	// create an array list of entity, the entity has lowest worldY come to index 0
 		
 		//GAME STATE
 		public int gameState;
@@ -180,24 +184,39 @@ public class GamePanel extends JPanel implements Runnable{
 				// tile draw
 				tileM.draw(g2);
 				
-				//NPC
+				//Add entities to the list
+				entityList.add(player);
+				
 				for( int i = 0; i < npc.length ; i++) {
-					if( npc[i] != null ) {	// check if slot is not emty to advoid null ptr
-						npc[i].draw(g2);
+					if( npc[i] != null){
+						entityList.add(npc[i]);
 					}
-					
 				}
 				
-				//object
-				for( int i=0; i<obj.length; i++ ) {
-					if( obj[i] != null ) {	// check if slot is not emty to advoid null ptr
-						obj[i].draw(g2,this);
+				for( int i = 0; i < obj.length ; i++) {
+					if( obj[i] != null){
+						entityList.add(obj[i]);
 					}
-					
 				}
 				
-				// player draw
-				player.draw(g2);
+				// SORT
+				Collections.sort(entityList, new Comparator<Entity>() {
+					@Override
+					public int compare(Entity e1, Entity e2) {
+						int result = Integer.compare((int)e1.worldY, (int)e2.worldY);
+						return result;
+					}
+				});
+				
+				// DRAW ENTITIES
+				for( int i= 0 ; i < entityList.size() ; i++) {
+					entityList.get(i).draw(g2);
+				}
+				
+				//EMPTY ENTITIES LIST
+				for( int i= 0 ; i < entityList.size() ; i++) {
+					entityList.remove(i);
+				}				
 				
 				//UI
 				ui.draw(g2);
