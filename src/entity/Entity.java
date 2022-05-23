@@ -59,6 +59,7 @@ public class Entity {
 	// ITEM ATTRIBUTE
 	public int attackValue;
 	public int defenseValue;
+	public String description = "";
 
 	//COUNTER
 	public int actionLockCounter = 0;
