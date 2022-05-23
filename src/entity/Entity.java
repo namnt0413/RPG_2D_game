@@ -116,7 +116,12 @@ public class Entity {
 		
 		if( this.type ==2 && contactPlayer == true) {
 			if( gp.player.invincible == false) {
-				gp.player.life -= 1;
+				
+				int damage = attack - gp.player.defense; 
+				if( damage < 0) {
+					damage = 0;
+				}
+				gp.player.life -= damage;
 				gp.player.invincible = true;
 				gp.playSE(6);
 			}

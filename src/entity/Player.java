@@ -219,8 +219,8 @@ public class Player extends Entity {
 			switch(direction) {
 				case "up":		worldY -= attackArea.height;break;
 				case "down":	worldY += attackArea.height;break;
-				case "left":	worldX -= attackArea.height;break;
-				case "right":	worldY += attackArea.height;break;
+				case "left":	worldX -= attackArea.width;break;
+				case "right":	worldX += attackArea.width;break;
 			} 			
 			//attack area become solid area
 			solidArea.width = attackArea.width;
@@ -303,7 +303,13 @@ public class Player extends Entity {
 		if( i!= 999 ) {
 			
 			if( invincible == false) {
-				life -= 1;
+				
+				int damage = gp.monster[i].attack - defense;
+				if( damage < 0) {
+					damage = 0;
+				}
+				
+				life -= damage;
 				invincible = true;
 				 gp.playSE(6);
 			}
@@ -314,18 +320,47 @@ public class Player extends Entity {
 	public void damageMonster( int i) {
 		if( i != 999) {
 			if( gp.monster[i].invincible == false ) {
-				gp.monster[i].life -= 1;
+				
+				int damage = attack - gp.monster[i].defense;
+				if( damage < 0) {
+					damage = 0;
+				}
+				
+				gp.monster[i].life -= damage;
+				gp.ui.addMessage(damage+"damage!");
+				
 				gp.monster[i].invincible = true;
 				 gp.playSE(5);
 				 gp.monster[i].damageReaction(); 
-			}
-			if( gp.monster[i].life <= 0) {
-				gp.monster[i].dying = true;
-				
+				 
+	
+				if( gp.monster[i].life <= 0) {
+					gp.monster[i].dying = true;
+					gp.ui.addMessage("You killed the" + gp.monster[i].name );
+					gp.ui.addMessage("Exp + " + gp.monster[i].exp);
+					exp += gp.monster[i].exp;
+					checkLevelUp();
+				}
 			}
 		}
 	}
 	
+	public void checkLevelUp() {
+		if( exp >= nextLevelExp ) {
+			level ++;
+			nextLevelExp = nextLevelExp *2;
+			maxLife += 2;
+			strength++;
+			dexterity++;
+			attack = getAttack();// recalculate
+			defense = getDefense();
+			gp.playSE(8);
+			gp.gameState = gp.dialogueState;
+			gp.ui.currentDialogue = "You are up to level " + level +"now!\n" ;
+		}
+		
+		
+	}	
 	public void draw(Graphics2D g2) {
 //		g2.setColor(Color.white);
 //		g2.fillRect(x, y, gp.tileSize, gp.tileSize);
