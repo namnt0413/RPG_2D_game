@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -73,6 +74,7 @@ public class Player extends Entity {
 		coin = 0;
 		currentWeapon = new OBJ_Sword_Normal(gp);
 		currentShield = new OBJ_Shield_Wood(gp);
+		projectile = new OBJ_Fireball(gp);
 		attack = getAttack();
 		defense = getDefense();
 		
@@ -214,13 +216,28 @@ public class Player extends Entity {
 			
 		}
 		
+		if( gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvaiableCounter == 60 ) {
+			//Set default coordinate, direction and user
+			projectile.set( (int)worldX , (int)worldY, direction, true, this );	
+			
+			//add it to array list
+			gp.projectileList.add(projectile);
+			shotAvaiableCounter = 0;	// 2 lan ban lien tiep phai tu 30 frame tro len 
+			
+			gp.playSE(10);
+		}
+		
 		//this needs to be outside of key if statement
 		if( invincible == true ) {
 			invincibleCounter++;
 			if( invincibleCounter >60 ) {
 				invincible = false;
 				invincibleCounter = 0;
-			}
+			}	
+		}
+		
+		if( shotAvaiableCounter < 60 ) {
+			shotAvaiableCounter++;
 			
 		}
 
@@ -254,7 +271,7 @@ public class Player extends Entity {
 			solidArea.height = attackArea.height;
 			//check monster collision with world x/y
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack);
 			
 			//after collision restore origin data
 			worldX = currentWorldX;
@@ -359,7 +376,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void damageMonster( int i) {
+	public void damageMonster( int i , int attack) {
 		if( i != 999) {
 			if( gp.monster[i].invincible == false ) {
 				
