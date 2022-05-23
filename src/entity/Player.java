@@ -69,6 +69,9 @@ public class Player extends Entity {
 		life = maxLife;
 		strength = 1;	// the more strength , the damage has
 		dexterity = 1;	// the more dexterity , the less damage received
+		maxMana = 4;
+		mana = maxMana;
+		ammo = 10;
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 0;
@@ -216,9 +219,13 @@ public class Player extends Entity {
 			
 		}
 		
-		if( gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvaiableCounter == 60 ) {
+		if( gp.keyH.shotKeyPressed == true && projectile.alive == false 
+			  && shotAvaiableCounter == 60 && projectile.haveResource(this) == true ) {
 			//Set default coordinate, direction and user
 			projectile.set( (int)worldX , (int)worldY, direction, true, this );	
+			
+			//SUBTRACT THE COST( mana, armor)
+			projectile.subtractResource(this);
 			
 			//add it to array list
 			gp.projectileList.add(projectile);
@@ -386,7 +393,7 @@ public class Player extends Entity {
 				}
 				
 				gp.monster[i].life -= damage;
-				gp.ui.addMessage(damage+"damage!");
+				gp.ui.addMessage(damage+" damage!");
 				
 				gp.monster[i].invincible = true;
 				 gp.playSE(5);
@@ -395,7 +402,7 @@ public class Player extends Entity {
 	
 				if( gp.monster[i].life <= 0) {
 					gp.monster[i].dying = true;
-					gp.ui.addMessage("You killed the" + gp.monster[i].name );
+					gp.ui.addMessage("You killed the " + gp.monster[i].name );
 					gp.ui.addMessage("Exp + " + gp.monster[i].exp);
 					exp += gp.monster[i].exp;
 					checkLevelUp();
