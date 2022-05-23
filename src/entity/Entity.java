@@ -44,7 +44,6 @@ public class Entity {
 	public String name;
 	public int maxLife;
 	public int life;
-	public int type;	// 0 = player , 1 = npc, 2 = monster
 	public int level;
 	public int strength;
 	public int dexterity;
@@ -68,6 +67,16 @@ public class Entity {
 	int dyingCounter = 0;
 	int hpBarCounter = 0;
 	
+	// TYPE IN GAME
+	public int type;	// 0 = player , 1 = npc, 2 = monster
+	public final int type_player = 0;
+	public final int type_npc = 1;
+	public final int type_monster = 2;
+	public final int type_sword = 3;
+	public final int type_axe = 4;
+	public final int type_shield = 5;
+	public final int type_consumable = 6;
+	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 		solidArea.x = 0;
@@ -81,6 +90,7 @@ public class Entity {
 	
 	public void setAction() {}
 	public void damageReaction() {}
+	public void use(Entity entity) {}	// overried in player class
 	public void speak() {
 		if( dialogues[dialogueIndex] == null) {
 			dialogueIndex = 0;
@@ -104,7 +114,7 @@ public class Entity {
 			break;
 		}
 	}
-	
+
 	public void update() {
 		setAction();
 		
@@ -115,7 +125,7 @@ public class Entity {
 		gp.cChecker.checkEntity(this, gp.monster); 
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
 		
-		if( this.type ==2 && contactPlayer == true) {
+		if( this.type == type_monster && contactPlayer == true) {
 			if( gp.player.invincible == false) {
 				
 				int damage = attack - gp.player.defense; 
@@ -280,7 +290,7 @@ public class Entity {
 			changeAlpha(g2,1f);	
 		}
 		if( dyingCounter > 40 ) {
-			dying = false;
+//			dying = false;
 			alive = false;
 		}
 	}
