@@ -247,6 +247,18 @@ public class Player extends Entity {
 			shotAvaiableCounter++;
 			
 		}
+		if( life > maxLife ) {
+			life = maxLife;
+		}
+		if( mana > maxMana) {
+			mana = maxMana;
+		}
+		if( life < 0 ) {
+			life = 0;
+		}
+		if( mana < 0 ) {
+			mana = 0;
+		}
 
 			
 	}
@@ -296,52 +308,30 @@ public class Player extends Entity {
 	
 	public void pickUpObject(int i) {
 		if( i != 999 ) {
-			String text;
-			
-			if( inventory.size() != maxInventorySize ) {
-				inventory.add(gp.obj[i]);
-				gp.playSE(1);
-				text = "You got a "+ gp.obj[i].name + "!";
+			// PICK UP ONLY ITEM
+			if( gp.obj[i].type == type_pickupOnly ) {
+				
+				gp.obj[i].use(this);
+				gp.obj[i] = null;
+				
 			}
+			// INVENTORY ITEM 
 			else {
-				text = "Your bag is full!";
-			}
-			gp.ui.addMessage(text);	
-			gp.obj[i] = null ;
-			
-/*			String objectName = gp.obj[i].name;
-			
-			switch(objectName) {
-			case "Key":
-				gp.playSE(1);	//play sound
-				hasKey++;
-				gp.obj[i] = null;
-				gp.ui.showMessage("You got a key !");
-				break;
-			case "Door":
-				if(hasKey>0) {
-					gp.playSE(3);
-					gp.obj[i] = null;
-					hasKey--;
-					gp.ui.showMessage("You opened the door !");
-				} else {
-					gp.ui.showMessage("You need a key !");
+				String text;
+				if( inventory.size() != maxInventorySize ) {
+					inventory.add(gp.obj[i]);
+					gp.playSE(1);
+					text = "You got a "+ gp.obj[i].name + "!";
 				}
-				break;
-			case "Boots":
-				gp.playSE(2);
-				speed+=1;
-				gp.obj[i] = null;
-				gp.ui.showMessage("Speed up !");
-				break;
-			case "Chest":
-				gp.ui.gameFinished = true;
-				gp.stopMusic();
-				gp.playSE(4);
-				gp.ui.showMessage("Congratulations !");
-				break;	
-			}//end switch
-*/		
+				else {
+					text = "Your bag is full!";
+				}
+				gp.ui.addMessage(text);	
+				gp.obj[i] = null ;
+			}
+			
+		
+
 		}
 		
 	}
