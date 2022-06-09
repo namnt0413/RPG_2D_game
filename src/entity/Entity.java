@@ -39,6 +39,7 @@ public class Entity {
 	public boolean alive = true;
 	public boolean dying = false;
 	boolean hpBarOn = false;	//bat khi player tan cong quai
+	public boolean destructible = false;
 		
 	// CHARACTER ATTRIBUTE
 	public String name;
@@ -150,6 +151,7 @@ public class Entity {
 		gp.cChecker.checkObject(this,false);
 		gp.cChecker.checkEntity(this, gp.npc);
 		gp.cChecker.checkEntity(this, gp.monster); 
+		gp.cChecker.checkEntity(this, gp.iTile);
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
 		
 		if( this.type == type_monster && contactPlayer == true) {

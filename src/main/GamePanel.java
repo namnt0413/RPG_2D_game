@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
+import tiles_interactive.InteractiveTile;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -51,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 		ArrayList<Entity> entityList = new ArrayList<>();	// create an array list of entity, the entity has lowest worldY come to index 0
 		public Entity monster[] = new Entity[20];
 		public ArrayList<Entity> projectileList = new ArrayList<>();
+		public InteractiveTile iTile[] = new InteractiveTile[50];
 		
 		//GAME STATE
 		public int gameState;
@@ -74,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable{
 			aSetter.setObject();
 			aSetter.setNPC();
 			aSetter.setMonster();
+			aSetter.setInteractiveTile();
 			
 //			playMusic(0);
 //			stopMusic();
@@ -191,6 +195,13 @@ public class GamePanel extends JPanel implements Runnable{
 					}
 				}
 				
+				for( int i = 0; i < iTile.length; i++) {
+					if(iTile[i] != null) {
+						iTile[i].update();
+						
+					}
+				}
+				
 			}
 			if( gameState == pauseState ) {
 				//nothing
@@ -211,6 +222,13 @@ public class GamePanel extends JPanel implements Runnable{
 			else {
 				// tile draw
 				tileM.draw(g2);
+				
+				//Interactive Tile
+				for( int i = 0; i < iTile.length; i++) {
+					if(iTile[i] != null) {
+						iTile[i].draw(g2);
+					}
+				}				
 				
 				//Add entities to the list
 				entityList.add(player);

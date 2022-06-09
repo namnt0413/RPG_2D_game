@@ -176,6 +176,9 @@ public class Player extends Entity {
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
 			contactMonster(monsterIndex);
 			
+			// check interactive collision
+			int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+			
 			// check event
 			gp.eHandler.checkEvent();
 			
@@ -291,6 +294,9 @@ public class Player extends Entity {
 			//check monster collision with world x/y
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
 			damageMonster(monsterIndex, attack);
+		
+			int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+			damageInteractiveTile(iTileIndex);
 			
 			//after collision restore origin data
 			worldX = currentWorldX;
@@ -440,6 +446,19 @@ public class Player extends Entity {
 		}	
 	}
 	
+	public void damageInteractiveTile( int i) {
+		if( i != 999 && gp.iTile[i].destructible == true && gp.iTile[i].isCorrectItem(this) == true
+				&& gp.iTile[i].invincible == false  ) {
+			gp.iTile[i].playSE();
+			gp.iTile[i].life--;
+			gp.iTile[i].invincible = true;
+			
+			if(gp.iTile[i].life == 0) {
+				gp.iTile[i] = gp.iTile[i].getDestroyedForm();
+			}
+
+		}
+	}
 	
 	public void draw(Graphics2D g2) {
 //		g2.setColor(Color.white);
