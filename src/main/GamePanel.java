@@ -50,8 +50,9 @@ public class GamePanel extends JPanel implements Runnable{
 		public Player player = new Player(this,keyH);
 		public Entity obj[] = new Entity[20];
 		public Entity npc[] = new Entity[10];
-		ArrayList<Entity> entityList = new ArrayList<>();	// create an array list of entity, the entity has lowest worldY come to index 0
 		public Entity monster[] = new Entity[20];
+		ArrayList<Entity> entityList = new ArrayList<>();	// create an array list of entity, the entity has lowest worldY come to index 0
+		public ArrayList<Entity> particleList = new ArrayList<>();
 		public ArrayList<Entity> projectileList = new ArrayList<>();
 		public InteractiveTile iTile[] = new InteractiveTile[50];
 		
@@ -195,6 +196,17 @@ public class GamePanel extends JPanel implements Runnable{
 					}
 				}
 				
+				for(int i =0; i < particleList.size() ; i++) {
+					if(particleList.get(i) != null) {
+						if( particleList.get(i).alive == true ) {
+							particleList.get(i).update();
+						}
+						if( particleList.get(i).alive == false ) {
+							particleList.remove(i);
+						}
+					}
+				}
+				
 				for( int i = 0; i < iTile.length; i++) {
 					if(iTile[i] != null) {
 						iTile[i].update();
@@ -254,6 +266,12 @@ public class GamePanel extends JPanel implements Runnable{
 				for( int i = 0; i < projectileList.size() ; i++) {
 					if( projectileList.get(i) != null){
 						entityList.add(projectileList.get(i));
+					}
+				}
+				
+				for( int i = 0; i < particleList.size() ; i++) {
+					if( particleList.get(i) != null){
+						entityList.add(particleList.get(i));
 					}
 				}
 				
