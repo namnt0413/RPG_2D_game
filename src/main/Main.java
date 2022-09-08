@@ -1,36 +1,29 @@
-package main;
+package Main;
+
+import java.awt.EventQueue;
+
+
 import javax.swing.JFrame;
 
-public class Main {
-	
-	public static JFrame window;
-	
-	public static void main(String[] args) {
-		
-		window = new JFrame();
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //click x to exit
-		window.setResizable(false);
-		window.setTitle("2D Adventure");
-//		window.setUndecorated(true);
-		
-		GamePanel gamePanel = new GamePanel();
-		window.add(gamePanel);
-		
-		gamePanel.config.loadConfig();
-		if( gamePanel.fullScreenOn == true) {
-			window.setUndecorated(true);
 
-		}
-		
-		window.pack();
-		
-		window.setLocationRelativeTo(null);
-		window.setVisible(true);
-		
-		gamePanel.setupGame();
-		gamePanel.startGameThread();
-		
+
+public class Main extends JFrame {
+	public Main() {
+		 add(new GamePanel()); // noi dung
+	      pack();  // di kem voi setPreferredSize(); tao khung
+	      setResizable(false);
+	      setTitle("Magic Cat");
+	      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      setLocationRelativeTo(null);
 	}
 	
+	 public static void main(String[] args) {
+		   EventQueue.invokeLater(()->{
+			   Main main = new Main();
+			   main.setVisible(true);
+		   });
+	   }
+
+
 
 }
