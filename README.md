@@ -7,6 +7,7 @@
 - Nguyen Tuan Nam
 - Vu Thien Phu
 - Tran Minh Quan
+You can visit our project at : https://github.com/tranminhq420/OOP-Game
 
 ## About
 Magic cat is a 2D RPG game built in Java language and based on OOP .In this game we will enter the Magic Cat character and use skills to destroy all monsters. When you defeat the Boss, you will win.
